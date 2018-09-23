@@ -94,11 +94,22 @@ handlers.ping = (data, callback) => {
   callback(200);
 };
 
+const greetingMaker = () => {
+  const greetings = [
+    "Hi there, skip!",
+    "Hello, my friend! How can I help you?",
+    "What's up?",
+    "Sorry, you've found us but we're not here right now.",
+    "Right address, but we're on vacation at the moment.",
+    "This is the place... but where is everyone?"
+  ];
+  const getRandomNumber = Math.floor(Math.random() * greetings.length);
+  const greetingJSON = { greeting: greetings[getRandomNumber] };
+  return greetingJSON;
+};
+
 handlers.hello = (data, callback) => {
-  callback(200, {
-    greeting:
-      "Greetings! You've come to the right address. Unfortunately, the droids you're looking for are on vacation."
-  });
+  callback(200, greetingMaker());
 };
 
 // Not-found handler
