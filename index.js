@@ -5,6 +5,7 @@ const url = require("url");
 const fs = require("fs");
 const StringDecoder = require("string_decoder").StringDecoder;
 
+// Instantiate HTTP Server
 const httpServer = http.createServer((req, res) => {
   unifiedServer(req, res);
 });
@@ -13,6 +14,7 @@ httpServer.listen(config.httpPort, () => {
   console.log(`The server is listening on port: ${config.httpPort}.`);
 });
 
+// Instantiate HTTPS Server
 const httpsServerOptions = {
   key: fs.readFileSync("./https/key.pem"),
   cert: fs.readFileSync("./https/cert.pem")
@@ -26,6 +28,7 @@ httpsServer.listen(config.httpsPort, () => {
   console.log(`The server is listening on port: ${config.httpsPort}.`);
 });
 
+// Unified Server
 const unifiedServer = (req, res) => {
   // Get the parsed URL
   const parsedUrl = url.parse(req.url, true);
@@ -93,7 +96,8 @@ handlers.ping = (data, callback) => {
 
 handlers.hello = (data, callback) => {
   callback(200, {
-    greeting: "Sorry, but these are not the droids you're looking for."
+    greeting:
+      "Greetings! You've come to the right address. Unfortunately, the droids you're looking for are on vacation."
   });
 };
 
