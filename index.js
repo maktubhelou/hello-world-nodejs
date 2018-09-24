@@ -1,8 +1,10 @@
-const config = require("./config");
+const config = require("./lib/config");
 const http = require("http");
 const https = require("https");
 const url = require("url");
 const fs = require("fs");
+const handlers = require("./lib/handlers");
+const helpers = require("./lib/helpers");
 const StringDecoder = require("string_decoder").StringDecoder;
 
 // Instantiate HTTP Server
@@ -63,7 +65,8 @@ const unifiedServer = (req, res) => {
       queryStringObject: queryStringObject,
       method: method,
       headers: headers,
-      payload: buffer
+      payload: helpers.parseJsonToObject(buffer),
+      buffer: buffer
     };
     // route request to handler specified in the router
     chosenHandler(data, (statusCode, payload) => {
@@ -87,40 +90,11 @@ const unifiedServer = (req, res) => {
   });
 };
 
-// Define our handlers
-const handlers = {};
-
-handlers.ping = (data, callback) => {
-  callback(200);
-};
-
-const greetingMaker = () => {
-  const greetings = [
-    "Hi there, skip!",
-    "Hello, my friend! How can I help you?",
-    "What's up?",
-    "Sorry, you've found us but we're not here right now.",
-    "Right address, but we're on vacation at the moment.",
-    "This is the place... but where is everyone?"
-  ];
-  const getRandomNumber = Math.floor(Math.random() * greetings.length);
-  const greetingJSON = { greeting: greetings[getRandomNumber] };
-  return greetingJSON;
-};
-
-handlers.hello = (data, callback) => {
-  callback(200, greetingMaker());
-};
-
-// Not-found handler
-handlers.notFound = (data, callback) => {
-  callback(404, {
-    name: "Something went wrong! There's no gold at that address."
-  });
-};
-
 // Define a request router
 const router = {
   ping: handlers.ping,
-  hello: handlers.hello
+  hello: handlers.hello,
+  users: handlers.users,
+  tokens: handlers.tokens,
+  checks: handlers.checks
 };
