@@ -4,19 +4,17 @@ const cli = require("./lib/cli");
 
 const app = {};
 
-app.init = callback => {
+// Declare a global that strict mode should catch;
+foo = "bar";
+
+app.init = () => {
   server.init();
   workers.init();
   setTimeout(() => {
     cli.init();
-    callback();
   }, 50);
 };
 
-// Self-invoking only if required directly.
-if (require.main === module) {
-  // this only calls app.init() if app.init() is required directly
-  app.init(() => {});
-}
+app.init();
 
 module.exports = app;

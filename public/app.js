@@ -24,6 +24,12 @@ app.client.request = function(
   callback
 ) {
   // Set defaults
+  // Headers should be an object
+  // Path should be a string
+  // Method should be one of the following: POST, GET, PUT, DELETE
+  // queryStringObject should be an object
+  // payload should be an object
+  // callback should be a function
   headers = typeof headers == "object" && headers !== null ? headers : {};
   path = typeof path == "string" ? path : "/";
   method =
@@ -38,11 +44,13 @@ app.client.request = function(
   payload = typeof payload == "object" && payload !== null ? payload : {};
   callback = typeof callback == "function" ? callback : false;
   console.log(method);
+
   // For each query string parameter sent, add it to the path
   var requestUrl = path + "?";
   var counter = 0;
   for (var queryKey in queryStringObject) {
     if (queryStringObject.hasOwnProperty(queryKey)) {
+      //@TODO find out why this is needed
       counter++;
       // If at least one query string parameter has already been added, preprend new ones with an ampersand
       if (counter > 1) {
@@ -71,7 +79,7 @@ app.client.request = function(
   }
 
   // When the request comes back, handle the response
-  xhr.onreadystatechange = function() {
+  xhr.onreadystatechange = () => {
     if (xhr.readyState == XMLHttpRequest.DONE) {
       var statusCode = xhr.status;
       var responseReturned = xhr.responseText;
