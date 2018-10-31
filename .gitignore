@@ -1,1 +1,8 @@
 config.js
+node_modules/ 
+package-log.json
+
+logs/
+tokens/
+users/
+checks/
